@@ -7,6 +7,7 @@ foreach($ids as $slug=>$langs){bj_assert(count($langs)===2&&pll_get_post($langs[
 bj_assert(count(wc_get_products(['limit'=>-1,'status'=>'publish']))===8,'Eight catalogue products, one record each');
 bj_assert(!pll_is_translated_post_type('product'),'Products excluded from Polylang translation records');
 foreach(wc_get_products(['limit'=>-1,'status'=>'publish']) as $p){bj_assert(!$p->is_purchasable(),'Purchasing blocked: '.$p->get_slug());bj_assert((bool)get_field('title_ar',$p->get_id()),'Arabic ACF title: '.$p->get_slug());}
+foreach(bj_catalogue_data() as $product){$sizes=array_column($product['sizes'],'size');bj_assert(!in_array('',$sizes,true)&&count($sizes)===count(array_unique($sizes)),'Unique native size variations: '.$product['slug']);}
 bj_assert(wc_attribute_taxonomy_id_by_name('pa_size')>0,'Native global Size attribute exists');
 bj_assert(count(get_field('retailers','option'))===6,'Six editable regional aggregators');
 bj_assert((int)get_field('site_logo','option')===(int)get_theme_mod('custom_logo'),'ACF and native logo synchronized');

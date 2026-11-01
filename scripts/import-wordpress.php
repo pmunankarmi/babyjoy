@@ -37,9 +37,12 @@ foreach($data['products'] as $order=>$item){
  update_field('field_bj_title_ar',$item['title_ar'],$id);update_field('field_bj_collection',$item['collection'],$id);update_field('field_bj_diaper_type',$item['type'],$id);
  $rows=[];foreach($item['benefits'] as $i=>$benefit)$rows[]=['benefit_en'=>$benefit,'benefit_ar'=>$item['benefits_ar'][$i]??''];update_field('field_bj_benefits',$rows,$id);
  update_field('field_bj_attribute_labels_ar',array_map(fn($a)=>['attribute_name'=>$a['name'],'attribute_label_ar'=>$a['name_ar'],'attribute_value_ar'=>$a['value_ar']],$item['attributes']),$id);
- $old=[];foreach($p->is_type('variable')?$p->get_children():[] as $vid){$v=wc_get_product($vid);if($v)$old[$v->get_attribute('pa_size')?:$v->get_attribute('Size')]=$vid;}
- foreach($item['sizes'] as $size){$v=new WC_Product_Variation($old[$size['size']]??0);$v->set_parent_id($id);$v->set_status('publish');$term=get_term_by('name',$size['size'],'pa_size');$v->set_attributes(['pa_size'=>$term?$term->slug:$size['size']]);$v->set_image_id(bj_import_media($size['image']));$v->set_manage_stock(false);$v->set_stock_status('instock');$vid=$v->save();foreach(['min_weight'=>$size['min'],'max_weight'=>$size['max'],'pack_counts'=>$size['packs'],'size_label_ar'=>$size['size']] as $key=>$value)update_post_meta($vid,'bj_'.$key,$value===null?'':$value);}
- if($p->is_type('variable'))WC_Product_Variable::sync($id);
+ $old=[];$old_ids=get_posts(['post_type'=>'product_variation','post_parent'=>$id,'post_status'=>['publish','private'],'fields'=>'ids','numberposts'=>-1]);
+ foreach($old_ids as $vid){$term_slug=get_post_meta($vid,'attribute_pa_size',true);$term=$term_slug?get_term_by('slug',$term_slug,'pa_size'):false;$label=$term?$term->name:get_post_meta($vid,'attribute_size',true);if($label!==''&&(!isset($old[$label])||$term))$old[$label]=$vid;}
+ $used=[];
+ foreach($item['sizes'] as $size){$v=new WC_Product_Variation($old[$size['size']]??0);$v->set_parent_id($id);$v->set_status('publish');$term=get_term_by('name',$size['size'],'pa_size');$v->set_attributes(['pa_size'=>$term?$term->slug:$size['size']]);$v->set_image_id(bj_import_media($size['image']));$v->set_manage_stock(false);$v->set_stock_status('instock');$vid=$v->save();$used[]=$vid;foreach(['min_weight'=>$size['min'],'max_weight'=>$size['max'],'pack_counts'=>$size['packs'],'size_label_ar'=>$size['size']] as $key=>$value)update_post_meta($vid,'bj_'.$key,$value===null?'':$value);}
+ foreach(array_diff($old_ids,$used) as $unused)wp_trash_post($unused);
+ if($p->is_type('variable')){wc_delete_product_transients($id);WC_Product_Variable::sync($id);}
  wp_set_object_terms($id,$item['collection'],'product_cat');
 }
 update_field('field_bj_aggregators_enabled',1,'option');

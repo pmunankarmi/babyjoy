@@ -11,3 +11,4 @@ header.mt-header .bjx-nav,
 header.mt-header .bjx-nav.bj-stuck{background:#9cc34f!important;opacity:1!important;backdrop-filter:none}
 .bj-no-aggregators #shop,.bj-no-aggregators #buy,.bj-no-aggregators #sg-link{display:none!important}
 @media(min-width:1001px){.bjx-nav .bj-menu{flex-wrap:nowrap;justify-content:space-evenly;gap:clamp(8px,1.2vw,18px)}.bjx-nav .bj-menu a{padding:1.2rem .4rem!important;white-space:nowrap;font-size:clamp(1.35rem,1.15vw,1.8rem)!important}}
+header.mt-header .bjx-nav{grid-column:1 / -1!important;width:100%!important;max-width:none!important;box-sizing:border-box;flex-basis:100%}

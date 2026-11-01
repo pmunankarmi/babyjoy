@@ -11,3 +11,5 @@ build/*.zip
 .DS_Store
 
 local-site/
+
+scripts/local-router.php
