@@ -48,3 +48,4 @@ html[dir="rtl"] .bjx-ticks{direction:rtl}
 /* Give the homepage slogan breathing room beneath navigation. */
 .mt-main_banner .bjx-slogan-h{padding-top:32px}
 @media(max-width:767px){.mt-main_banner .bjx-slogan-h{padding-top:20px}}
+.en-slogan b{margin-inline-end:.22em}
