@@ -12,3 +12,15 @@ header.mt-header .bjx-nav.bj-stuck{background:#9cc34f!important;opacity:1!import
 .bj-no-aggregators #shop,.bj-no-aggregators #buy,.bj-no-aggregators #sg-link{display:none!important}
 @media(min-width:1001px){.bjx-nav .bj-menu{flex-wrap:nowrap;justify-content:space-evenly;gap:clamp(8px,1.2vw,18px)}.bjx-nav .bj-menu a{padding:1.2rem .4rem!important;white-space:nowrap;font-size:clamp(1.35rem,1.15vw,1.8rem)!important}}
 header.mt-header .bjx-nav{grid-column:1 / -1!important;width:100%!important;max-width:none!important;box-sizing:border-box;flex-basis:100%}
+/* Homepage retailers retain the spacious logo tiles from the supplied design. */
+#shop .bjx-ret{display:flex;justify-content:center;align-items:stretch;flex-wrap:wrap;gap:14px;max-width:1000px;margin:2.8rem auto 0}
+#shop .bjx-ret>a{display:flex;align-items:center;justify-content:center;flex:0 1 150px;width:150px;max-width:100%;height:96px;padding:14px;border:1px solid #e2e5db;border-radius:16px;background:#fff;box-shadow:0 8px 20px #64734f16;box-sizing:border-box}
+#shop .bjx-ret img{display:block;width:100%;height:64px;max-width:100%;max-height:64px;object-fit:contain}
+@media(max-width:767px){#shop .bjx-ret{gap:10px;margin-top:2rem}#shop .bjx-ret>a{flex-basis:calc((100% - 20px)/3);width:calc((100% - 20px)/3);height:78px;padding:10px;border-radius:12px}#shop .bjx-ret img{height:52px;max-height:52px}}
+/* Keep retailer logos and actions aligned even when range lists differ. */
+.agg-card .agg-logo{display:flex;align-items:center;justify-content:center;height:108px}
+.agg-card .agg-logo img{width:100%;height:100%;object-fit:contain}
+.agg-card .agg-ranges{margin-bottom:18px}
+.agg-card .agg-btn{margin-top:auto!important}
+@media(max-width:767px){.agg-card .agg-logo{height:92px}.agg-page .bjx-box{padding-inline:18px}}
+@media(min-width:768px) and (max-width:1000px){#shop .bjx-ret>a{flex-basis:calc((100% - 28px)/3);width:calc((100% - 28px)/3)}}
