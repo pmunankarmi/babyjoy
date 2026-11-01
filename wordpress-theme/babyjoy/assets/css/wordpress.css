@@ -45,3 +45,6 @@ header.mt-header .bjx-nav .bj-menu a{border-radius:999px!important}
 /* Arabic weight controls increase from right to left, including the filled track. */
 html[dir="rtl"] .bjx-range{direction:rtl;background:linear-gradient(to left,var(--lime) var(--pct,40%),rgba(255,255,255,.3) var(--pct,40%))}
 html[dir="rtl"] .bjx-ticks{direction:rtl}
+/* Give the homepage slogan breathing room beneath navigation. */
+.mt-main_banner .bjx-slogan-h{padding-top:32px}
+@media(max-width:767px){.mt-main_banner .bjx-slogan-h{padding-top:20px}}
