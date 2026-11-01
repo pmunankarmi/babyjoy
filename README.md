@@ -6,7 +6,7 @@ Conversion of BabyJoy9.57 into a WordPress theme and companion plugin.
 
 The Local app manages **BabyJoy** at `http://babyjoy.local`, with files under `/Users/puskar/Documents/Sites/babyjoy`. WordPress admin: `http://babyjoy.local/wp-admin/`. Use the WordPress credentials entered during Local creation.
 
-The Local theme and BabyJoy Core directories link to this checkout, so source edits appear immediately. Stop/start the site in Local. The temporary `.local/` SQLite installation is a verification sandbox, not the Local site.
+The Local theme and BabyJoy Core are installed copies so admin updates cannot overwrite this source checkout. After source edits, run `python3 scripts/sync-local.py /Users/puskar/Documents/Sites/babyjoy/app/public`. Stop/start the site in Local. The temporary `.local/` SQLite installation is a verification sandbox, not the Local site.
 
 ## Required plugins
 
