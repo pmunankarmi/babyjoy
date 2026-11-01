@@ -12,6 +12,9 @@ add_filter('acf/prepare_field',function($field){
   $value=(string)($field['value']??'');
   $short=!preg_match('/[\r\n]/',$value)&&(mb_strlen($value)<=120||preg_match('#^(?:https?://|mailto:|tel:)#',$value));
   $field['type']=$short?'text':'textarea';
+  // ACF validated the original type before this filter; apply the new type's defaults.
+  $field_type=acf_get_field_type($field['type']);
+  if($field_type){$field=array_merge($field_type->defaults,$field);}
   if(!$short){$field['rows']=max(3,min(8,(int)ceil(mb_strlen($value)/90)));$field['new_lines']='';}
  }
  return $field;

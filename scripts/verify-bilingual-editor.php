@@ -15,3 +15,15 @@ try{
  WP_CLI::log('PASS Arabic values load through Polylang and save to the linked Arabic record only.');
 }finally{update_field('field_bj_content_fields',$arabic,$ar);acf_get_store('values')->reset();}
 WP_CLI::success('Bilingual editor verified; original content restored.');
+
+$proxy=get_field('bj_linked_ar_fields',$ar);
+if(count($proxy)!==count($english))WP_CLI::error('English rows did not load in Arabic editor.');
+$probe=$proxy;$probe[0]['field_bj_ar_content_value']=$english[0]['content_value'].' [reverse verification]';
+try{
+ update_field('field_bj_linked_ar_fields',$probe,$ar);acf_get_store('values')->reset();
+ if(get_field('content_fields',$en)[0]['content_value']!==$probe[0]['field_bj_ar_content_value'])throw new RuntimeException('Save did not reach English page.');
+ if(get_field('content_fields',$ar)!==$arabic)throw new RuntimeException('Arabic content changed unexpectedly.');
+ if(metadata_exists('post',$ar,'bj_linked_ar_fields'))throw new RuntimeException('Proxy data duplicated on Arabic page.');
+ WP_CLI::log('PASS English values load and save through the Arabic editor.');
+}finally{update_field('field_bj_content_fields',$english,$en);acf_get_store('values')->reset();}
+WP_CLI::success('Both directions verified; original content restored.');

@@ -4,13 +4,13 @@ function bj_language(){ $q=get_query_var('bj_language');if(in_array($q,['en','ar
 function bj_field($name,$id=false){return function_exists('get_field')?get_field($name,$id):get_post_meta($id?:get_the_ID(),$name,true);}
 function bj_strings(){static $strings=[];if(!$strings)foreach((array)bj_field('ui_strings','option') as $r)$strings[$r['string_key']]=$r['string_'.bj_language()]?:$r['string_en'];return $strings;}
 function bj_t($key){return bj_strings()[$key]??'';}
-function bj_page_url($slug,$lang=null){$lang=$lang?:bj_language();$ids=get_option('bj_page_ids',[]);return isset($ids[$slug][$lang])?get_permalink($ids[$slug][$lang]):home_url('/');}
-function bj_product_url($id,$lang=null){return home_url('/'.($lang?:bj_language()).'/product/'.get_post_field('post_name',$id).'/');}
-function bj_asset($path){$ids=get_option('bj_media_ids',[]);return !empty($ids[$path])?(wp_get_attachment_url($ids[$path])?:''):get_template_directory_uri().'/assets/'.ltrim($path,'/');}
+function bj_page_url($slug,$lang=null){$lang=$lang?:bj_language();if(function_exists('bj_country')&&bj_country())return home_url('/'.($lang==='en'?'en/':'').bj_country().'/'.($slug==='index'?'':$slug.'/'));$ids=get_option('bj_page_ids',[]);return isset($ids[$slug][$lang])?get_permalink($ids[$slug][$lang]):home_url('/');}
+function bj_product_url($id,$lang=null){return home_url('/'.(($lang?:bj_language())==='en'?'en/':(function_exists('bj_country')&&bj_country()?'':'ar/')).(function_exists('bj_country')&&bj_country()?bj_country().'/':'').'product/'.get_post_field('post_name',$id).'/');}
+function bj_asset($path){$ids=get_option('bj_media_ids',[]);$url=!empty($ids[$path])?wp_get_attachment_url($ids[$path]):false;return $url?:wp_upload_dir()['baseurl'].'/babyjoy/'.ltrim($path,'/');}
 function bj_markup($markup,$fields=[],$media=[]){
  $markup=preg_replace_callback('/\{\{measure:(\d+)\}\}/',function($m)use($fields){$value=$fields[(int)$m[1]]['content_value']??$fields[(int)$m[1]]['value']??'';if(preg_match('/^(.+?)\s+([^\d\s]+)$/u',$value,$parts))return esc_html($parts[1]).' <small>'.esc_html($parts[2]).'</small>';return esc_html($value);},$markup);
  $markup=preg_replace_callback('/\{\{text:(\d+)\}\}/',fn($m)=>esc_html($fields[(int)$m[1]]['content_value']??$fields[(int)$m[1]]['value']??''),$markup);
- $overrides=[];foreach((array)$media as $r)if(is_array($r)&&!empty($r['media_key']))$overrides[$r['media_key']]=wp_get_attachment_url($r['media_file']);
+ $overrides=[];foreach((array)$media as $r)if(is_array($r)&&!empty($r['media_key'])){ $url=wp_get_attachment_url($r['media_file']);if($url)$overrides[$r['media_key']]=$url; }
  $markup=preg_replace_callback('/\{\{asset:([^}]+)\}\}/',fn($m)=>esc_url($overrides[$m[1]]??bj_asset($m[1])),$markup);
  $markup=str_replace('href="./"','href="'.esc_url(bj_page_url('index')).'"',$markup);
  $markup=preg_replace_callback('/href="([^"#]*\.html)(#[^"]*)?"/',function($m){$base=basename($m[1],'.html');$hash=$m[2]??'';if(str_starts_with($base,'product-')){$p=get_page_by_path(substr($base,8),OBJECT,'product');$url=$p?bj_product_url($p->ID):bj_page_url('products');}else $url=bj_page_url($base);return 'href="'.esc_url($url.$hash).'"';},$markup);
@@ -19,7 +19,7 @@ function bj_markup($markup,$fields=[],$media=[]){
  $email=bj_field('contact_email','option');
  $markup=preg_replace('/mailto:[^"\s<]+/','mailto:'.esc_attr($email),$markup);
  $markup=preg_replace('/[a-zA-Z0-9._%+-]+@(?:ughi|gulfhygienic)\.com\.sa/',esc_html($email),$markup);
- $markup=do_shortcode($markup);if(!bj_field('aggregators_enabled','option'))$markup=preg_replace('/<section\b[^>]*id="shop"[^>]*>.*?<\/section>/s','',$markup);return $markup;
+ $markup=do_shortcode($markup);if(!bj_aggregators_enabled())$markup=preg_replace('/<section\b[^>]*id="shop"[^>]*>.*?<\/section>/s','',$markup);return function_exists('bj_country_aggregator_markup')?bj_country_aggregator_markup($markup):$markup;
 }
 function bj_chrome($part){$data=get_option('bj_chrome',[])[bj_language()][$part]??[];$name=$part.'_'.bj_language();$rows=bj_field($name,'option');$fields=$rows?array_map(fn($r)=>['value'=>$r[$name.'_value']],$rows):($data['fields']??[]);return bj_markup($data['markup']??'',$fields);}
 function bj_socials(){foreach((array)bj_field('socials','option') as $r)echo '<a href="'.esc_url($r['social_url']).'" target="_blank" rel="noopener noreferrer">'.wp_get_attachment_image($r['social_icon'],'thumbnail',false,['alt'=>$r['social_name']]).'</a>';}
@@ -34,4 +34,4 @@ add_shortcode('babyjoy_contact_details',function(){
  if($phone)$html.='<p>'.esc_html(bj_t('phone')).': <a href="'.esc_url('tel:'.preg_replace('/[^+0-9]/','',$phone)).'">'.esc_html($phone).'</a></p>';
  if($address)$html.='<p>'.nl2br(esc_html($address)).'</p>';return $html;
 });
-add_filter('body_class',function($classes){if(!bj_field('aggregators_enabled','option'))$classes[]='bj-no-aggregators';return $classes;});
+add_filter('body_class',function($classes){if(!bj_aggregators_enabled())$classes[]='bj-no-aggregators';return $classes;});

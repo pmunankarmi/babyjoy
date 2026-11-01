@@ -14,7 +14,7 @@ function bj_contact_submit(){
  foreach(['email'=>$email,'name'=>$name,'message'=>$message,'phone'=>sanitize_text_field(wp_unslash($_POST['phone']??'')),'language'=>in_array($_POST['language']??'',['en','ar'],true)?$_POST['language']:'en','consent'=>'yes'] as $k=>$v)update_post_meta($id,'bj_'.$k,$v);
  set_transient($key,1,MINUTE_IN_SECONDS);
  $recipient=function_exists('get_field')?get_field('notification_email','option'):'';
- if(is_email($recipient))wp_mail($recipient,sprintf(__('New contact submission #%d','babyjoy'),$id),$name."\n".$email."\n\n".$message,['Reply-To: '.$email]);
+ if(is_email($recipient))wp_mail($recipient,sprintf(__('New contact submission #%d','babyjoy'),$id),$name."\n".$email."\n\n".$message,['From: BabyJoy <noreply@babyjoy-arabia.com>','Reply-To: '.$email]);
  wp_send_json_success(['id'=>$id]);
 }
 add_action('add_meta_boxes',function(){add_meta_box('bj_contact_details',__('Submission details','babyjoy'),function($post){foreach(['name','email','phone','language','consent','message'] as $key)echo '<p><strong>'.esc_html(ucfirst($key)).'</strong><br>'.nl2br(esc_html(get_post_meta($post->ID,'bj_'.$key,true))).'</p>';},'bj_submission','normal');});

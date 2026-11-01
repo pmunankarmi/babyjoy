@@ -5,7 +5,7 @@ if(!function_exists('update_field')||!function_exists('wc_get_product'))WP_CLI::
 $file=$args[0]??dirname(__DIR__).'/build/import-data.json';$data=json_decode(file_get_contents($file),true,512,JSON_THROW_ON_ERROR);
 require_once ABSPATH.'wp-admin/includes/image.php';
 global $source,$media;
-$source=dirname(realpath($file),2).'/wordpress-theme/babyjoy/assets/';$media=get_option('bj_media_ids',[]);
+$source=dirname(realpath($file),2).'/wordpress-content/uploads/babyjoy/';$media=get_option('bj_media_ids',[]);
 function bj_import_media($path){global $source,$media;if(isset($media[$path])&&get_post($media[$path]))return $media[$path];$file=$source.$path;if(!is_file($file))return 0;$uploads=wp_upload_dir();$dest=$uploads['basedir'].'/babyjoy/'.$path;wp_mkdir_p(dirname($dest));copy($file,$dest);$type=wp_check_filetype($file);$id=wp_insert_attachment(['post_mime_type'=>$type['type']?:('svg'===pathinfo($file,PATHINFO_EXTENSION)?'image/svg+xml':'application/octet-stream'),'post_title'=>pathinfo($file,PATHINFO_FILENAME),'post_status'=>'inherit'],$dest);if(is_wp_error($id))return 0;update_attached_file($id,$dest);if(in_array(pathinfo($file,PATHINFO_EXTENSION),['jpg','jpeg','png','webp'],true)){add_filter('intermediate_image_sizes_advanced','__return_empty_array',999);$meta=wp_generate_attachment_metadata($id,$dest);wp_update_attachment_metadata($id,$meta);remove_filter('intermediate_image_sizes_advanced','__return_empty_array',999);}return $media[$path]=$id;}
 // Explicitly initialize the two standard page languages.
 if(function_exists('PLL')){

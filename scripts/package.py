@@ -7,3 +7,8 @@ for folder,name in [('wordpress-theme/babyjoy','babyjoy'),('wordpress-plugin/bab
   for p in sorted((root/folder).rglob('*')):
    if p.is_file() and p.name!='.DS_Store':z.write(p,Path(name)/p.relative_to(root/folder))
  print(root/'build'/f'{name}.zip')
+
+with ZipFile(root/'build'/'babyjoy-media.zip','w',ZIP_DEFLATED) as z:
+ for p in sorted((root/'wordpress-content/uploads/babyjoy').rglob('*')):
+  if p.is_file():z.write(p,Path('uploads/babyjoy')/p.relative_to(root/'wordpress-content/uploads/babyjoy'))
+print(root/'build'/'babyjoy-media.zip')

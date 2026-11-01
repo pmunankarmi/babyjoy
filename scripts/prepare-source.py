@@ -7,7 +7,9 @@ src=ROOT/'BabyJoy9.57'
 if not src.exists():
  with zipfile.ZipFile('/Users/puskar/Downloads/BabyJoy9.57.zip') as z:z.extractall(src)
 theme=ROOT/'wordpress-theme/babyjoy'
-shutil.copytree(src/'assets',theme/'assets',dirs_exist_ok=True)
+for folder in (src/'assets').iterdir():
+ destination=(ROOT/'wordpress-content/uploads/babyjoy'/folder.name) if folder.name in ['img','uploads','fonts'] else theme/'assets'/folder.name
+ if folder.is_dir():shutil.copytree(folder,destination,dirs_exist_ok=True)
 data={'pages':[],'products':[],'chrome':{},'retailers':[],'socials':[]}
 def soup(lang,name):return BeautifulSoup((src/('en' if lang=='en' else '')/name).read_text(),'html.parser')
 def asset(s):return re.sub(r'^(?:\.\./|\./)*assets/','',s)

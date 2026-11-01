@@ -40,3 +40,5 @@ body .bjx-cta,
 body .wp-block-button__link,
 body a[role="button"],
 header.mt-header .bjx-nav .bj-menu a{border-radius:999px!important}
+/* Countries without online retailers omit purchase destinations throughout shared content. */
+.bj-no-aggregators a[href*="/aggregators/"],.bj-no-aggregators a[href$="#shop"]{display:none!important}

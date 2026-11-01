@@ -9,3 +9,18 @@ for source,dest in [(root/'wordpress-theme/babyjoy',content/'themes/babyjoy'),(r
  if dest.is_symlink():dest.unlink()
  shutil.copytree(source,dest,dirs_exist_ok=True)
  print('Synced',dest)
+
+# Media lives outside the theme so replacing/updating the theme cannot remove it.
+media_source=root/'wordpress-content/uploads/babyjoy'
+media_dest=content/'uploads/babyjoy'
+shutil.copytree(media_source,media_dest,dirs_exist_ok=True)
+for name in ['img','uploads','fonts']:
+ old=content/'themes/babyjoy/assets'/name
+ if old.exists():
+  for file in old.rglob('*'):
+   if file.is_file():
+    target=media_dest/name/file.relative_to(old)
+    if not target.exists() or file.read_bytes()!=target.read_bytes():
+     raise SystemExit(f'Media verification failed: {file}')
+  shutil.rmtree(old)
+print('Synced media outside theme:',media_dest)
