@@ -24,3 +24,6 @@ header.mt-header .bjx-nav{grid-column:1 / -1!important;width:100%!important;max-
 .agg-card .agg-btn{margin-top:auto!important}
 @media(max-width:767px){.agg-card .agg-logo{height:92px}.agg-page .bjx-box{padding-inline:18px}}
 @media(min-width:768px) and (max-width:1000px){#shop .bjx-ret>a{flex-basis:calc((100% - 28px)/3);width:calc((100% - 28px)/3)}}
+/* Give navigation pills comfortable space on both sides of their labels. */
+header.mt-header .bjx-nav .bj-menu a{padding-inline:1.6rem!important}
+@media(min-width:1001px){.bjx-nav .bj-menu{gap:clamp(4px,.6vw,10px)}}
