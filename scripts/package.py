@@ -12,3 +12,8 @@ with ZipFile(root/'build'/'babyjoy-media.zip','w',ZIP_DEFLATED) as z:
  for p in sorted((root/'wordpress-content/uploads/babyjoy').rglob('*')):
   if p.is_file():z.write(p,Path('uploads/babyjoy')/p.relative_to(root/'wordpress-content/uploads/babyjoy'))
 print(root/'build'/'babyjoy-media.zip')
+
+# Include a one-time migration archive; the theme extracts missing files to uploads
+# and removes this archive on its first request after the update.
+with ZipFile(root/'build'/'babyjoy.zip','a',ZIP_DEFLATED) as z:
+ z.write(root/'build'/'babyjoy-media.zip','babyjoy/babyjoy-media.zip')
