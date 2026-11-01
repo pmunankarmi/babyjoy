@@ -2,7 +2,7 @@
 /**
  * Plugin Name: BabyJoy Core
  * Description: Catalogue-only WooCommerce, bilingual product fields, contact submissions and site options.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Requires PHP: 8.1
  * Update URI: https://github.com/pmunankarmi/babyjoy
  */
@@ -35,3 +35,10 @@ add_filter('redirect_canonical',function($redirect){return get_query_var('bj_lan
 add_filter('acf/load_value/name=site_logo',fn($value)=>get_theme_mod('custom_logo',0));
 add_filter('acf/update_value/name=site_logo',function($value){set_theme_mod('custom_logo',absint(is_array($value)?($value['ID']??0):$value));return $value;});
 add_action('admin_notices',function(){if(!current_user_can('manage_options'))return;foreach(['WooCommerce'=>'WooCommerce','ACF'=>'ACF Pro'] as $class=>$label)if(!class_exists($class))echo '<div class="notice notice-error"><p>'.esc_html(sprintf(__('BabyJoy requires %s to be active.','babyjoy'),$label)).'</p></div>';});
+// Keep the catalogue tools while hiding unused store-management navigation.
+add_action('admin_menu',function(){
+ foreach(['woocommerce','wc-admin&path=/analytics/overview','woocommerce-marketing','wc-admin&path=/payments/overview','wc-payments','wc-orders','edit.php?post_type=shop_order','edit.php?post_type=shop_coupon'] as $slug)remove_menu_page($slug);
+ // WooCommerce versions may register Payments/Analytics with a different route.
+ global $menu;
+ foreach((array)$menu as $item){$slug=$item[2]??'';if(str_starts_with($slug,'wc-admin')||str_starts_with($slug,'admin.php?page=wc-admin')||str_starts_with($slug,'wc-payments')||str_contains($slug,'from=PAYMENTS_MENU_ITEM'))remove_menu_page($slug);}
+},999);
