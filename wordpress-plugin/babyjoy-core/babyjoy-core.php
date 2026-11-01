@@ -2,7 +2,7 @@
 /**
  * Plugin Name: BabyJoy Core
  * Description: Catalogue-only WooCommerce, bilingual product fields, contact submissions and site options.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Requires PHP: 8.1
  * Update URI: https://github.com/pmunankarmi/babyjoy
  */
@@ -42,3 +42,7 @@ add_action('admin_menu',function(){
  global $menu;
  foreach((array)$menu as $item){$slug=$item[2]??'';if(str_starts_with($slug,'wc-admin')||str_starts_with($slug,'admin.php?page=wc-admin')||str_starts_with($slug,'wc-payments')||str_contains($slug,'from=PAYMENTS_MENU_ITEM'))remove_menu_page($slug);}
 },999);
+// Classic editing across posts, pages, products and widgets.
+add_filter('use_block_editor_for_post','__return_false',100);
+add_filter('use_block_editor_for_post_type','__return_false',100);
+add_filter('use_widgets_block_editor','__return_false',100);

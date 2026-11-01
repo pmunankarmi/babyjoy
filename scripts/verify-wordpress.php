@@ -1,6 +1,10 @@
 <?php
 if(!defined('WP_CLI'))exit;
 function bj_assert($ok,$message){if(!$ok)WP_CLI::error($message);WP_CLI::log('PASS '.$message);}
+bj_assert(!use_block_editor_for_post_type('post')&&!use_block_editor_for_post_type('page')&&!use_block_editor_for_post_type('product'),'Gutenberg disabled across content types');
+bj_assert(!apply_filters('use_widgets_block_editor',true),'Classic widgets enabled');
+bj_assert((bool)wp_get_theme('babyjoy')->get_screenshot(),'Theme screenshot available');
+bj_assert(function_exists('acf_add_options_page')&&function_exists('pll_current_language')&&function_exists('polylang_slug_unique_slug_in_language'),'ACF Pro, Polylang and shared slugs available');
 $ids=get_option('bj_page_ids');
 bj_assert(count($ids)===8,'Eight standard pages with linked translations');
 foreach($ids as $slug=>$langs){bj_assert(count($langs)===2&&pll_get_post($langs['en'],'ar')===$langs['ar'],'Translation link: '.$slug);bj_assert(get_post_field('post_name',$langs['en'])===get_post_field('post_name',$langs['ar']),'Shared slug: '.$slug);}
