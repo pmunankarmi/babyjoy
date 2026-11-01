@@ -23,7 +23,7 @@ The bundled `polylang-slug.php` is reused from the SAB project, originally Polyl
 
 Gutenberg and block widgets are disabled; use the classic editor and ACF fields.
 
-- **Pages:** edit each linked translation using Polylang. ACF “Page content and media” exposes the imported text and media by descriptive labels; layout stays in protected post metadata. Field order corresponds to the original layout: edit values without reordering or deleting imported rows. Add new layouts through theme development rather than changing row order.
+- **Pages:** edit each linked translation using Polylang. ACF “Page content and media” exposes the imported text and media with descriptive headings; reference labels are hidden and only content is editable; layout stays in protected post metadata. Field order corresponds to the original layout: edit values without reordering or deleting imported rows. Add new layouts through theme development rather than changing row order.
 - **Products:** edit native title, description, image, gallery, categories, attributes and ordering. ACF contains Arabic content, collection/type, benefits and regional retailer selection.
 - **Products → Attributes:** the global Size attribute provides shared size terms. Variations select Size and their native image. Additional fields inside each variation hold minimum/maximum kg, pack counts and Arabic size label. Blank maximum means open-ended; blank minimum means unconfirmed and is excluded from weight recommendations.
 - **BabyJoy Options:** site logo, contact email/phone/address, notification recipient, social links, per-site aggregators and translated interface/header/footer text. Logo uses the same attachment as Appearance → Customize → Site Identity.

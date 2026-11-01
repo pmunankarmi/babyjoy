@@ -2,13 +2,14 @@
 /**
  * Plugin Name: BabyJoy Core
  * Description: Catalogue-only WooCommerce, bilingual product fields, contact submissions and site options.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Requires PHP: 8.1
  * Update URI: https://github.com/pmunankarmi/babyjoy
  */
 if (!defined('ABSPATH')) exit;
 add_action('plugins_loaded',function(){if(defined('POLYLANG_VERSION')&&!function_exists('polylang_slug_unique_slug_in_language')&&!defined('POLYLANG_PRO'))require __DIR__.'/polylang-slug.php';},30);
 require __DIR__.'/fields.php';
+require __DIR__.'/admin-content-fields.php';
 require __DIR__.'/contact.php';
 // Products deliberately have one record. Pages continue to use standard Polylang translations.
 add_filter('pll_get_post_types',function($types){unset($types['product'],$types['product_variation']);return $types;},99);
