@@ -27,3 +27,5 @@ header.mt-header .bjx-nav{grid-column:1 / -1!important;width:100%!important;max-
 /* Give navigation pills comfortable space on both sides of their labels. */
 header.mt-header .bjx-nav .bj-menu a{padding-inline:1.6rem!important}
 @media(min-width:1001px){.bjx-nav .bj-menu{gap:clamp(4px,.6vw,10px)}}
+/* A comfortable tap target inside the size recommendation card. */
+#size-guide .bjx-res #sg-link{display:inline-flex;align-items:center;justify-content:center;align-self:flex-start;box-sizing:border-box;min-height:44px;padding:12px 28px!important;font-size:1.4rem!important;line-height:1.4;max-width:100%;text-align:center}
