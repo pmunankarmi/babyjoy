@@ -2,6 +2,7 @@
 if(!defined('ABSPATH'))exit;
 add_filter('update_themes_github.com',function($update,$theme_data,$stylesheet){
  if($stylesheet!=='babyjoy')return $update;
+ if(is_admin()&&current_user_can('update_themes')&&!empty($_GET['force-check']))delete_transient('bj_github_release');
  $release=get_transient('bj_github_release');
  if(false===$release){$response=wp_remote_get('https://api.github.com/repos/pmunankarmi/babyjoy/releases/latest',['timeout'=>8,'headers'=>['Accept'=>'application/vnd.github+json']]);if(is_wp_error($response)||wp_remote_retrieve_response_code($response)!==200){set_transient('bj_github_release',['unavailable'=>true],15*MINUTE_IN_SECONDS);return false;}$release=json_decode(wp_remote_retrieve_body($response),true);set_transient('bj_github_release',$release,HOUR_IN_SECONDS);}
  if(!empty($release['unavailable'])||!empty($release['prerelease'])||!empty($release['draft']))return false;
