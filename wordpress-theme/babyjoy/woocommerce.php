@@ -1,0 +1,1 @@
+<?php get_header();if(is_singular('product')){while(have_posts()){the_post();get_template_part('template-parts/product');}}else{echo '<section class="bjx bjx-sec"><div class="container-xl">'.do_shortcode('[babyjoy_products]').'</div></section>';}get_footer();

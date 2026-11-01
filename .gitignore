@@ -1,0 +1,13 @@
+.local/
+BabyJoy9.57/
+BabyJoy9.57-grid-fixed.zip
+babyjoy-static/
+babyjoy-static.zip
+babyjoy_R2_fixed/
+babyjoy_R2_fixed.zip
+reference/
+theme-source/
+build/*.zip
+.DS_Store
+
+local-site/

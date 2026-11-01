@@ -1,0 +1,76 @@
+/*!
+Theme Name: Babyjoy
+Theme URI: http://underscores.me/
+Author: Babyjoy
+Author URI: http://babyjoy-setalhabayeb.com
+Description: Description
+Version: 1.0.0
+Tested up to: 5.4
+Requires PHP: 5.6
+License: GNU General Public License v2 or later
+License URI: LICENSE
+Text Domain: babyjoy
+Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
+
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned.
+
+Babyjoy is based on Underscores https://underscores.me/, (C) 2012-2020 Automattic, Inc.
+Underscores is distributed under the terms of the GNU GPL v2 or later.
+
+Normalizing styles have been helped along thanks to the fine work of
+Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
+*/
+
+/* Do not show the outline on the skip link target. */
+#primary[tabindex="-1"]:focus {
+	outline: 0;
+}
+
+/* Alignments
+--------------------------------------------- */
+.alignleft {
+
+	/*rtl:ignore*/
+	float: left;
+
+	/*rtl:ignore*/
+	margin-right: 1.5em;
+	margin-bottom: 1.5em;
+}
+
+.alignright {
+
+	/*rtl:ignore*/
+	float: right;
+
+	/*rtl:ignore*/
+	margin-left: 1.5em;
+	margin-bottom: 1.5em;
+}
+
+.aligncenter {
+	clear: both;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 1.5em;
+}
+
+
+
+.mt-partner {margin-top:15px; border-radius:15px; padding-left:20px; padding-right:20px;}
+.mt-partner .mt-thumb {height:100%; display:flex; justify-content:center; align-items:end; transition:all 0.3s ease-in-out;}
+.mt-partner .mt-thumb:hover {transform:scale(105%); box-shadow:0 0 5px rgba(0,0,0,0.1);}
+@media (max-width:767px) {
+[dir="rtl"] .mt-lang.justify-content-end {justify-content:flex-start !important;}
+}
+	
+[dir="rtl"] .mt-contact_btn {left:2rem; right:unset;}
+.mt-contact_btn svg, .mt-close svg {width:100%; height:100%;}
+.mt-contact_form {position:fixed; top:50%; left:50%; width:600px; max-width:90%; transform:translate(-50%, -50%); background:var(--plain-color); border-radius:2rem; z-index:998; padding:3rem; box-shadow:0 0 2rem rgba(0,0,0,0.2); max-height:80vh; overflow:auto; display:none;}
+.mt-close {width:3rem; height:3rem; border:none; background:none; padding:0; position:absolute; right:0.5rem; top:0.5rem;}
+
+
+.intro-img {border-radius: 20px;}
+	

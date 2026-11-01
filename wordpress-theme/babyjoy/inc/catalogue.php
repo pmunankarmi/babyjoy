@@ -1,0 +1,17 @@
+<?php
+if(!defined('ABSPATH'))exit;
+function bj_product_title($id){return bj_language()==='ar'?(bj_field('title_ar',$id)?:get_the_title($id)):get_the_title($id);}
+function bj_catalogue_data(){
+ if(!function_exists('wc_get_products'))return [];
+ $out=[];foreach(wc_get_products(['limit'=>-1,'status'=>'publish','orderby'=>'menu_order','order'=>'ASC']) as $p){
+ $sizes=[];foreach($p->is_type('variable')?$p->get_children():[] as $id){$v=wc_get_product($id);if(!$v||$v->get_status()!=='publish')continue;$min=get_post_meta($id,'bj_min_weight',true);$max=get_post_meta($id,'bj_max_weight',true);$sizes[]=['size'=>($v->get_attribute('pa_size')?:$v->get_attribute('Size')),'size_ar'=>get_post_meta($id,'bj_size_label_ar',true),'min'=>$min===''?null:(float)$min,'max'=>$max===''?null:(float)$max,'packs'=>get_post_meta($id,'bj_pack_counts',true),'image'=>wp_get_attachment_image_url($v->get_image_id()?:$p->get_image_id(),'large')?:''];}
+ $out[]=['id'=>$p->get_id(),'title'=>bj_product_title($p->get_id()),'slug'=>$p->get_slug(),'collection'=>bj_field('collection',$p->get_id()),'type'=>bj_field('diaper_type',$p->get_id()),'url'=>bj_product_url($p->get_id()),'image'=>wp_get_attachment_image_url($p->get_image_id(),'large')?:'','sizes'=>$sizes];
+ }return $out;
+}
+add_shortcode('babyjoy_products',function($atts){$atts=shortcode_atts(['collection'=>''],$atts);$html='<div class="bjx-fam">';foreach(bj_catalogue_data() as $p){if($atts['collection']&&$p['collection']!==$atts['collection'])continue;$html.='<a href="'.esc_url($p['url']).'"><img src="'.esc_url($p['image']).'" alt="'.esc_attr($p['title']).'" loading="lazy"><span>'.esc_html($p['title']).'</span></a>';}return $html.'</div>';});
+add_shortcode('babyjoy_retailers',function($atts){$atts=shortcode_atts(['product'=>0],$atts);if(!bj_field('aggregators_enabled','option'))return '';$selected=$atts['product']?(array)bj_field('product_aggregators',(int)$atts['product']):[];$html='';foreach((array)bj_field('retailers','option') as $r){if(empty($r['retailer_enabled'])||$selected&&!in_array(sanitize_title($r['retailer_name']),$selected,true))continue;$name=bj_language()==='ar'?($r['retailer_name_ar']?:$r['retailer_name']):$r['retailer_name'];$html.='<a href="'.esc_url($r['retailer_url']).'" target="_blank" rel="nofollow noopener noreferrer" title="'.esc_attr($name).'">'.wp_get_attachment_image($r['retailer_logo'],'medium',false,['alt'=>$name]).'</a>';}return $html?'<div class="bjx-ret">'.$html.'</div>':'';});
+add_filter('wpseo_canonical',function($url){return is_singular('product')?bj_product_url(get_queried_object_id()):$url;});
+add_action('wp_head',function(){if(!is_singular('product'))return;$id=get_queried_object_id();echo '<link rel="alternate" hreflang="en" href="'.esc_url(bj_product_url($id,'en')).'"><link rel="alternate" hreflang="ar" href="'.esc_url(bj_product_url($id,'ar')).'">';},5);
+remove_action('wp_head','rel_canonical');
+add_action('wp_head',function(){if(is_singular('product'))echo '<link rel="canonical" href="'.esc_url(bj_product_url(get_queried_object_id())).'">';else rel_canonical();});
+add_shortcode('babyjoy_pack',function($atts){$atts=shortcode_atts(['slug'=>''],$atts);$p=get_page_by_path(sanitize_title($atts['slug']),OBJECT,'product');if(!$p)return '';return '<a class="s8-pack" href="'.esc_url(bj_product_url($p->ID)).'">'.get_the_post_thumbnail($p->ID,'large',['alt'=>bj_product_title($p->ID)]).'</a>';});
