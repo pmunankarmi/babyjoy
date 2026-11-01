@@ -29,3 +29,14 @@ header.mt-header .bjx-nav .bj-menu a{padding-inline:1.6rem!important}
 @media(min-width:1001px){.bjx-nav .bj-menu{gap:clamp(4px,.6vw,10px)}}
 /* A comfortable tap target inside the size recommendation card. */
 #size-guide .bjx-res #sg-link{display:inline-flex;align-items:center;justify-content:center;align-self:flex-start;box-sizing:border-box;min-height:44px;padding:12px 28px!important;font-size:1.4rem!important;line-height:1.4;max-width:100%;text-align:center}
+/* One pill shape for front-end buttons and button-like links. */
+body button,
+body input[type="button"],
+body input[type="submit"],
+body input[type="reset"],
+body .mt-btn,
+body .bjx-btn2,
+body .bjx-cta,
+body .wp-block-button__link,
+body a[role="button"],
+header.mt-header .bjx-nav .bj-menu a{border-radius:999px!important}
