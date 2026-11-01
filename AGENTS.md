@@ -9,3 +9,4 @@
 - Keep the theme-options logo field and WordPress Customizer custom_logo synchronized in both directions, with one attachment as the source of truth.
 
 BabyJoy exception: WooCommerce products remain single records with Arabic ACF fields; do not add Polylang for WooCommerce.
+- Use single-line text inputs for short content; reserve textareas for long or multiline copy.

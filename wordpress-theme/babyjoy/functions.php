@@ -1,6 +1,7 @@
 <?php
 if(!defined('ABSPATH'))exit;
 require __DIR__.'/inc/content.php';
+require __DIR__.'/inc/bilingual-pages.php';
 require __DIR__.'/inc/catalogue.php';
 require __DIR__.'/inc/updater.php';
 add_action('after_setup_theme',function(){add_theme_support('title-tag');add_theme_support('post-thumbnails');add_theme_support('custom-logo');add_theme_support('html5',['search-form','gallery','caption','style','script']);add_theme_support('woocommerce');register_nav_menus(['primary'=>'Primary navigation','footer'=>'Footer navigation']);load_theme_textdomain('babyjoy',__DIR__.'/languages');});

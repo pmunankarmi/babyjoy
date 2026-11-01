@@ -2,7 +2,7 @@
 /**
  * Plugin Name: BabyJoy Core
  * Description: Catalogue-only WooCommerce, bilingual product fields, contact submissions and site options.
- * Version: 1.0.3
+ * Version: 1.0.4
  * Requires PHP: 8.1
  * Update URI: https://github.com/pmunankarmi/babyjoy
  */

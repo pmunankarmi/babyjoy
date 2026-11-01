@@ -35,7 +35,7 @@ def tokenize(s):
   if node.parent.name in ['style','script'] or not str(node).strip() or str(node).lstrip().startswith('[if'):continue
   value=str(node).strip()
   if value.startswith('<!--'):continue
-  i=len(fields);fields.append({'label':node.parent.get('data-content-label',value[:90]),'value':value});node.replace_with('{{'+('measure' if node.parent.get('data-content-label')=='Amount' else 'text')+':'+str(i)+'}}')
+  i=len(fields);fields.append({'label':node.parent.get('data-content-label',value[:90]),'value':value});node.replace_with('{{'+('measure' if node.parent.get('data-content-measure') or node.parent.get('data-content-label')=='Amount' else 'text')+':'+str(i)+'}}')
  for el in s.find_all(True):
   for key in ['alt','aria-label','placeholder','title']+(['href'] if el.get('href','').startswith(('https://','http://','tel:')) else []):
    if el.get(key):
@@ -51,6 +51,11 @@ for lang in ['en','ar']:
   for amount in m.select('.bjx-fml'):
    combined=amount.get_text(' ',strip=True)
    amount.clear();amount['data-content-label']='Amount';amount.append(combined)
+  for unit in list(m.select('small')):
+   parent=unit.parent
+   if len(parent.contents)==2 and re.fullmatch(r'\s*\d+(?:[.,]\d+)?\s*',str(parent.contents[0])):
+    combined=parent.get_text(' ',strip=True)
+    parent.clear();parent['data-content-label']='Weight' if parent.name=='output' else 'Value and unit';parent['data-content-measure']='1';parent.append(combined)
   for angle in m.select('.bjx-f45:not(.bjx-fml)'):
    number=angle.select_one('.n')
    if number:

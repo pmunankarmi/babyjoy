@@ -23,6 +23,7 @@ The bundled `polylang-slug.php` is reused from the SAB project, originally Polyl
 
 Gutenberg and block widgets are disabled; use the classic editor and ACF fields.
 
+- **Arabic from the English editor:** the theme’s Arabic translation panel resolves the linked record with `pll_get_post($english_id, 'ar')`. Its title, content and media load from and save directly to that Arabic page. Values are not duplicated on the English page. No additional plugin is needed.
 - **Pages:** edit each linked translation using Polylang. ACF “Page content and media” exposes the imported text and media with descriptive headings; reference labels are hidden and only content is editable; layout stays in protected post metadata. Field order corresponds to the original layout: edit values without reordering or deleting imported rows. Add new layouts through theme development rather than changing row order.
 - **Products:** edit native title, description, image, gallery, categories, attributes and ordering. ACF contains Arabic content, collection/type, benefits and regional retailer selection.
 - **Products → Attributes:** the global Size attribute provides shared size terms. Variations select Size and their native image. Additional fields inside each variation hold minimum/maximum kg, pack counts and Arabic size label. Blank maximum means open-ended; blank minimum means unconfirmed and is excluded from weight recommendations.
