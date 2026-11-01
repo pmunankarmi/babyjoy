@@ -42,3 +42,6 @@ body a[role="button"],
 header.mt-header .bjx-nav .bj-menu a{border-radius:999px!important}
 /* Countries without online retailers omit purchase destinations throughout shared content. */
 .bj-no-aggregators a[href*="/aggregators/"],.bj-no-aggregators a[href$="#shop"]{display:none!important}
+/* Arabic weight controls increase from right to left, including the filled track. */
+html[dir="rtl"] .bjx-range{direction:rtl;background:linear-gradient(to left,var(--lime) var(--pct,40%),rgba(255,255,255,.3) var(--pct,40%))}
+html[dir="rtl"] .bjx-ticks{direction:rtl}
