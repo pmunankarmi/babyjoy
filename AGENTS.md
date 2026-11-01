@@ -1,5 +1,6 @@
 # WordPress build defaults
 
+- Keep each value and its measurement unit together in one editable field (for example, 45° or 125 ml), with a descriptive field heading.
 - Disable Gutenberg for all post types and use classic widget editing.
 - Include a real theme screenshot for Appearance → Themes (1200 × 900 preferred).
 - Use ACF Pro for custom fields and theme options, preferring native WordPress fields where suitable.

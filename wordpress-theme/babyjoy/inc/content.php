@@ -8,6 +8,7 @@ function bj_page_url($slug,$lang=null){$lang=$lang?:bj_language();$ids=get_optio
 function bj_product_url($id,$lang=null){return home_url('/'.($lang?:bj_language()).'/product/'.get_post_field('post_name',$id).'/');}
 function bj_asset($path){$ids=get_option('bj_media_ids',[]);return !empty($ids[$path])?(wp_get_attachment_url($ids[$path])?:''):get_template_directory_uri().'/assets/'.ltrim($path,'/');}
 function bj_markup($markup,$fields=[],$media=[]){
+ $markup=preg_replace_callback('/\{\{measure:(\d+)\}\}/',function($m)use($fields){$value=$fields[(int)$m[1]]['content_value']??$fields[(int)$m[1]]['value']??'';if(preg_match('/^(.+?)\s+([^\d\s]+)$/u',$value,$parts))return esc_html($parts[1]).' <small>'.esc_html($parts[2]).'</small>';return esc_html($value);},$markup);
  $markup=preg_replace_callback('/\{\{text:(\d+)\}\}/',fn($m)=>esc_html($fields[(int)$m[1]]['content_value']??$fields[(int)$m[1]]['value']??''),$markup);
  $overrides=[];foreach((array)$media as $r)if(is_array($r)&&!empty($r['media_key']))$overrides[$r['media_key']]=wp_get_attachment_url($r['media_file']);
  $markup=preg_replace_callback('/\{\{asset:([^}]+)\}\}/',fn($m)=>esc_url($overrides[$m[1]]??bj_asset($m[1])),$markup);

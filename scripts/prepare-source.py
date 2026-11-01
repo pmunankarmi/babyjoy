@@ -35,7 +35,7 @@ def tokenize(s):
   if node.parent.name in ['style','script'] or not str(node).strip() or str(node).lstrip().startswith('[if'):continue
   value=str(node).strip()
   if value.startswith('<!--'):continue
-  i=len(fields);fields.append({'label':node.parent.get('data-content-label',value[:90]),'value':value});node.replace_with('{{text:'+str(i)+'}}')
+  i=len(fields);fields.append({'label':node.parent.get('data-content-label',value[:90]),'value':value});node.replace_with('{{'+('measure' if node.parent.get('data-content-label')=='Amount' else 'text')+':'+str(i)+'}}')
  for el in s.find_all(True):
   for key in ['alt','aria-label','placeholder','title']+(['href'] if el.get('href','').startswith(('https://','http://','tel:')) else []):
    if el.get(key):
@@ -48,6 +48,9 @@ for lang in ['en','ar']:
  data['chrome'][lang]={'nav':[{'label':a.text,'url':a['href']} for a in nav.select('a')], 'header':tokenize(header),'footer':tokenize(BeautifulSoup(str(home.footer),'html.parser'))}
  for p in ['index','about','contact','guide','terms','privacy','aggregators','products']:
   s=soup(lang,p+'.html');m=main(s)
+  for amount in m.select('.bjx-fml'):
+   combined=amount.get_text(' ',strip=True)
+   amount.clear();amount['data-content-label']='Amount';amount.append(combined)
   for angle in m.select('.bjx-f45:not(.bjx-fml)'):
    number=angle.select_one('.n')
    if number:
