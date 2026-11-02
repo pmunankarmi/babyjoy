@@ -49,3 +49,5 @@ html[dir="rtl"] .bjx-ticks{direction:rtl}
 .mt-main_banner .bjx-slogan-h{padding-top:32px}
 @media(max-width:767px){.mt-main_banner .bjx-slogan-h{padding-top:20px}}
 .en-slogan b{margin-inline-end:.22em}
+/* Preserve contrast inside the two-colour Pinterest badge in the header. */
+.bjx-hrow .mt-social img[alt="Pinterest"]{filter:none!important}
